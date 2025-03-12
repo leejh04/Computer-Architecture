@@ -60,3 +60,80 @@ Dataflow: 명령어가 dataflow depenced에 의해 정렬되어 있다.
 - External Interfaces
     - IO
     - Management
+
+### Programmer Visible State
+#### Memory
+- array of storage locations indexed by an address
+
+#### Registers
+- Given special names in the ISA (as opposed to address)
+- general vs. special purpose
+
+#### Program Counter
+- Memory address of the current instruction
+다시 말해, 명렁어, 즉 프로그램은 programmer visible state의 값들을 어떻게 바꿔야 하는지 명시한다.
+
+### General Instruction Classes
+#### 산술 논리 연산 (예시: add, sub, and, or)
+- 대체로 정수형 또는 실수형 명렁어로 분류될 수 있다.
+1) 특정 위치에서 피연산자들을 가져온다.
+2) 연산자들을 함수로 연산한다.
+3) 특정 위치에 결과를 저장한다.
+4) 다음 명렁어 위치로 pc를 업데이트한다.
+
+#### Data movement operations (예시: move, load, store)
+1) 특정 위치에서 피연산자들을 가져온다.
+2) 특정 위치에 피연산자의 값들을 저장한다.
+3) pc를 다음으로 옮긴다.
+
+#### Control flow operations (예시: branch, jump)
+1) 특정 위치에서 피연산자들을 가져온다.
+2) branch 조건과 target address를 계산한다.
+3) branch 조건이 참이면, pc를 target address로, 거짓이면, 다음 명령어로 업데이트한다.
+
+### Atomicity of an Instruction
+- 모든 명령어들은 소프트웨어 관점에서 완전히 실행되었거나, 아직 실행되었거나 둘중 하나이다.
+- 다시 말해, 명령어에 의한, programmer visible state의 부분적인 업데이트는 관측되어서는 절대 안된다.
+- 예시: semantics of a RISC-V instruction "ADDI x4, x5, 10"
+    - GPR[x4] <- GPR[x5] + 10
+    - PC <- PC + 4
+
+### 초기의 ISA: EDSAC (1949)
+- Single accumulator architecture
+
+### Evolution of "Register" Architecture
+- accumulator
+- accumulator + address registers
+- General-purpose registers
+
+### Operand Sources?
+- 피연산자의 개수
+    - mondaic (예시: EDSAC)
+    - dyadic (예시: IBM 360)
+    - triadic (예시: MIPS)
+- can ALU operands be in memory?
+    - Yes (예시: x86/VAX/CISC)
+    - No (예시: MIPS/RISC) -> load-store architecture
+- How many different variations
+    - a very few (예시: MIPS/RISC)
+    - a lot (예시: x86)
+    - everything goes (예시: VAX)
+
+### Memory Addressing Modes
+- absolute
+    - immediate value를 주소로 사용.
+- register indirect
+    - GPR의 값을 주소로 사용.
+- displaced of based
+    - GPR+offset의 값을 주소로 사용.
+- indexed
+    - GPR[r_base]+GPR[r_index]의 값을 주소로 사용.
+- memory indirect
+    - M[GPR]의 값을 주소로 사용.
+- auto inc/decrement
+    - GPR[r_base]의 값을 주소로 사용하고, GPR[r_base]를 더하거나 뺀다.
+
+### VAX-11: ISA in Mid-life Crisis
+- 최초의 상업적인 32비트 머신.
+
+### RISC (Reduced Instruction Set Computer)
